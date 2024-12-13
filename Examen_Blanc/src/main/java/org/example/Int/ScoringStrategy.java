@@ -3,7 +3,7 @@ package org.example.Int;
 import org.example.entities.Transaction;
 
 public class ScoringStrategy implements NotificationStrategy {
-    private double solde = 0;
+    private double solde = 100;
 
     @Override
     public void handleNotification(String agentName, Transaction transaction) {

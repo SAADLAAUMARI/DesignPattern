@@ -1,19 +1,74 @@
 package org.example;
 
+import org.example.Int.HistoryStrategy;
+import org.example.Int.ScoringStrategy;
+import org.example.entities.Agent;
+import org.example.entities.Transaction;
+import org.example.enums.Type;
+
+import java.time.LocalDate;
+import java.sql.Date;
+
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
     public static void main(String[] args) {
-        // Press Alt+Entrée with your caret at the highlighted text to see how
-        // IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        Agent a1 = new Agent("A1");
+        Agent a2 = new Agent("A2");
+        Agent a3 = new Agent("A3");
+        a1.subscribe(a2);
+        a1.subscribe(a3);
+        Transaction transaction=new Transaction.Builder()
+                .id("Transaction 1")
+                .date(Date.valueOf(LocalDate.now()))
+                .montant(1000)
+                .type(Type.Vente)
+                .build();
+        System.out.println("transaction: "+transaction+" avec l'id: "+transaction.getId()+" la date: "+transaction.getDate());
+        a1.addTransaction(transaction);
+        a1.afficherTransactions();
+        a2.afficherTransactions();
+        a3.afficherTransactions();
 
-        // Press Maj+F10 or click the green arrow button in the gutter to run the code.
-        for (int i = 1; i <= 5; i++) {
+        System.out.println("Strategies--------------------------------------------------------\n");
+        Agent agent = new Agent("Agent1");
 
-            // Press Maj+F9 to start debugging your code. We have set one breakpoint
-            // for you, but you can always add more by pressing Ctrl+F8.
-            System.out.println("i = " + i);
-        }
+        // Transactions
+        Transaction t1=new Transaction.Builder()
+                .id("Transaction__1")
+                .date(Date.valueOf(LocalDate.now()))
+                .montant(1000)
+                .type(Type.Vente)
+                .build();
+        Transaction t2=new Transaction.Builder()
+                .id("Transaction 1")
+                .date(Date.valueOf(LocalDate.now()))
+                .montant(1000)
+                .type(Type.Vente)
+                .build();
+        Transaction t3=new Transaction.Builder()
+                .id("Transaction 1")
+                .date(Date.valueOf(LocalDate.now()))
+                .montant(1000)
+                .type(Type.Vente)
+                .build();
+
+        // Stratégie par défaut
+        System.out.println("=== Utilisation de DefaultStrategy ===");
+        agent.addTransaction(t1);
+
+        // Changement de stratégie : Historique
+        System.out.println("\n=== Utilisation de HistoryStrategy ===");
+        agent.setNotificationStrategy(new HistoryStrategy());
+        agent.addTransaction(t2);
+
+        // Changement de stratégie : Scoring
+        System.out.println("\n=== Utilisation de ScoringStrategy ===");
+        agent.setNotificationStrategy(new ScoringStrategy());
+        agent.addTransaction(t3);
+
+        // Afficher les transactions
+        System.out.println("\n=== Transactions de l'agent ===");
+        agent.afficherTransactions();
     }
 }
