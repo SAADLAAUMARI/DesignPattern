@@ -1,5 +1,4 @@
 package org.example.Int;
-
 public class HDMIAdapter implements Adapter {
     @Override
     public void output(String content) {

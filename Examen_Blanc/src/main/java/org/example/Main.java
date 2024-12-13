@@ -1,13 +1,14 @@
 package org.example;
 
-import org.example.Int.HistoryStrategy;
-import org.example.Int.ScoringStrategy;
+import org.example.Int.*;
+import org.example.containers.AgentContainer;
 import org.example.entities.Agent;
 import org.example.entities.Transaction;
 import org.example.enums.Type;
 
 import java.time.LocalDate;
 import java.sql.Date;
+import java.util.Arrays;
 
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
@@ -70,5 +71,25 @@ public class Main {
         // Afficher les transactions
         System.out.println("\n=== Transactions de l'agent ===");
         agent.afficherTransactions();
+
+        System.out.println("\n La partie Adapter: \n");
+        AgentContainer container = AgentContainer.getInstance();
+
+        // Ajout d'agents
+        Agent agent1 = new Agent("Agent1", Arrays.asList(t1,t2));
+        Agent agent2 = new Agent("Agent2", Arrays.asList(t2,t3));
+        container.addAgent(agent1);
+        container.addAgent(agent2);
+
+        // Afficheur HDMI direct
+        Adapter hdmiAdapter = new HDMIAdapter();
+        System.out.println("=== Affichage HDMI ===");
+        container.displayState(hdmiAdapter);
+
+        // Afficheur VGA via adaptateur
+        Adapter vgaAdapter = new VGAAdapter();
+        Adapter vgaToHDMI = new VGAtoHDMIAdapter(vgaAdapter);
+        System.out.println("\n=== Affichage VGA via HDMI Adapter ===");
+        container.displayState(vgaToHDMI);
     }
-}
+    }

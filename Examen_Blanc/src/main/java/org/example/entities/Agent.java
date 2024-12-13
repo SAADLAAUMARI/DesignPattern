@@ -17,6 +17,12 @@ public class Agent implements Observable,Observer {
         this.observers = new ArrayList<>();
         this.notificationStrategy=new DefaultStrategy();
     }
+    public Agent(String name, List<Transaction> transactions) {
+        this.name = name;
+        this.transactions = new ArrayList<>(transactions);
+        this.observers = new ArrayList<>();
+        this.notificationStrategy=new DefaultStrategy();
+    }
     public String getName() {
         return name;
     }
@@ -62,6 +68,7 @@ public class Agent implements Observable,Observer {
     @Override
     public void update(String agentName, Transaction transaction) {
         System.out.println("Agent: "+agentName+ "a ajouté la "+transaction);
+        addTransaction(transaction);
     }
 
 }
